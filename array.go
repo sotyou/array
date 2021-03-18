@@ -8,7 +8,7 @@ type Array []float64
 
 type D2Array [][]float64
 
-type FuncMap func(float64) float64
+type FuncMap func(float64) []interface{}
 
 type FuncReduce func(interface{}, float64, int) interface{}
 
@@ -71,14 +71,14 @@ func (a Array) Regularize(length int) Array {
 	mean := a[:length].Mean()
 	res := a[:length].Reduce(Array{}, func(acc interface{}, val float64, index int) interface{} {
 		res := acc.(Array)
-		res = append(res, (val - mean)/std)
+		res = append(res, (val-mean)/std)
 		return res
 	}).(Array)
 	return append(res, a[length:]...)
 }
 
-func (a Array) Map(f FuncMap) Array {
-	res := make(Array, len(a))
+func (a Array) Map(f FuncMap) []interface{} {
+	res := make([]interface{}, len(a))
 	for i, v := range a {
 		res[i] = f(v)
 	}
