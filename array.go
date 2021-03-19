@@ -12,6 +12,8 @@ type FuncMap func(float64) []interface{}
 
 type FuncReduce func(interface{}, float64, int) interface{}
 
+type FuncFilter func(float64) bool
+
 func (a Array) Add(b Array, rate float64) Array {
 	res := make(Array, len(a))
 	for i, v := range a {
@@ -91,4 +93,13 @@ func (a Array) Reduce(initV interface{}, f FuncReduce) interface{} {
 		res = f(res, v, i)
 	}
 	return res
+}
+
+func (a Array) Filter(f FuncFilter) (res Array) {
+	for _, v := range a {
+		if f(v) {
+			res = append(res, v)
+		}
+	}
+	return
 }
