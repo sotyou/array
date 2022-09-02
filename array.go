@@ -4,6 +4,7 @@ import (
 	"math"
 )
 
+
 type Array []float64
 
 type D2Array [][]float64
